@@ -1,62 +1,42 @@
 
-const search = async (film)=>{
-  // var reload ="false"
-  
+const search = async (film)=>{  
   var titre = 'http://www.omdbapi.com/?s='+film+'&apikey=ff461133'
   const response=await fetch(titre);
   const data = await response.json();
-  var result = document.getElementById("result") 
   var i = 0;
-  var img ;
-  console.log(data.Search)
   var src= document.getElementById("card");
-  // if(src.hasChildNodes()){
-  //   console.log(src.childNodes)
-  //   var lengthNode = src.childNodes
-  //   for(var i = 0;i<lengthNode;i++){
-  //     src.removeChild(src[i]);
-  //   }
-  // }
+
   while(i<data.Search.length){
     
-
-    var card = document.getElementById("card");
-    var cardAll=document.getElementById("card").innerHTML;
-    // var h2Remove= document.querySelector("h2")
-    //  if(h2Remove !=null){
-    //    h2Remove.remove();
-    //  }
-   
-
-    //title
-   
-    var h2 = document.createElement("h2")
-    var title = document.createTextNode(data.Search[i].Title);
-    h2.appendChild(title);
-    
-    document.body.insertBefore(h2,card) 
-  
-   // img
-   img =document.createElement("img")
-   img.src = data.Search[i].Poster 
-   src.appendChild(img)
-   document.body.insertBefore(img,card)
-   i++;
-  }
-
+  src.innerHTML += `
+  <div id="movieCard-${i}" class="card my-2 movie-card">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="${data.Search[i].Poster}" class="card-img movie-img" alt="movie poster">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">${data.Search[i].Title}</h5>
+        <p> ${data.Search[i].Year} </p>
+        <button id="readMore-${i}" class="btn btn-primary">Read more</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+i++;
+};
 }
+
 
 
 document.getElementById("searchButton").addEventListener("click",()=>{
   
   var film =document.getElementById("searchInput").value;
   var src= document.getElementById("card");
-  while (src.hasChildNodes()) {
-    src.removeChild(src.lastChild);
-  }  
+  src.innerHTML="";
   search(film);
   
   
 
-})
+});
 
